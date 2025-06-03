@@ -1,0 +1,429 @@
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Triscotte Maison : Recette Interactive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #3D405B;
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        .section-title {
+            border-bottom: 2px solid #E07A5F;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        .btn-active {
+            background-color: #E07A5F;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+        .btn-inactive {
+            background-color: #F2CC8F;
+            color: #3D405B;
+        }
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary .arrow {
+            transform: rotate(90deg);
+        }
+        .arrow {
+            transition: transform 0.2s;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+    </head>
+<body class="antialiased">
+
+    <header class="bg-cover bg-center h-80 md:h-96" style="background-image: url('https://images.unsplash.com/photo-1589476020235-9a8c6f04443a?q=80&w=2070&auto=format&fit=crop');">
+        <div class="bg-black bg-opacity-40 h-full flex flex-col justify-center items-center text-white text-center p-4">
+            <h1 class="text-4xl md:text-6xl font-bold">La Triscotte Maison</h1>
+            <p class="mt-4 text-lg md:text-xl max-w-2xl">Recréez le croustillant unique et la légèreté incomparable de la Triscotte, en vous inspirant des secrets du brevet original.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-16">
+
+        <section id="concepts" class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 section-title">Les 3 Secrets de la Triscotte</h2>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-[#81B29A]">
+                    <div class="text-4xl mb-4">✨</div>
+                    <h3 class="text-2xl font-bold mb-2">Surface Lisse Sans Croûte</h3>
+                    <p>Contrairement à une biscotte, sa surface est lisse et délicate. Le secret réside dans une cuisson qui empêche la formation d'une croûte dure, permettant une expansion parfaite.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-[#F2CC8F]">
+                    <div class="text-4xl mb-4">🎈</div>
+                    <h3 class="text-2xl font-bold mb-2">Structure Aérienne</h3>
+                    <p>L'intérieur est un réseau de fines alvéoles qui la rend incroyablement légère. Une fermentation contrôlée de chaque pièce est la clé de cette texture unique.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-[#E07A5F]">
+                    <div class="text-4xl mb-4">💥</div>
+                    <h3 class="text-2xl font-bold mb-2">Croustillant Inimitable</h3>
+                    <p>Un croustillant net et franc, sans être collant en bouche. Ceci est obtenu grâce à un séchage précis qui abaisse l'humidité à un niveau minimal.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ingredients" class="mb-16 bg-white p-6 md:p-8 rounded-lg shadow-lg">
+             <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 section-title">Les Ingrédients</h2>
+             <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Le brevet propose plusieurs formules. Nous nous concentrons sur la "Formule Allégée", idéale pour commencer. Vous pouvez explorer la "Formule Riche", plus proche d'un biscuit, pour comparer.</p>
+            <div class="flex justify-center mb-8 gap-4">
+                <button id="btn-allegee" class="px-6 py-2 rounded-lg transition-all btn-active">Formule Allégée</button>
+                <button id="btn-riche" class="px-6 py-2 rounded-lg transition-all btn-inactive">Formule Riche</button>
+            </div>
+
+            <div class="mb-8 p-4 bg-gray-50 rounded-lg flex flex-col sm:flex-row items-center justify-center gap-4">
+                <label for="flour-quantity" class="text-lg font-semibold text-gray-700">Quantité de Farine (g) :</label>
+                <input type="number" id="flour-quantity" value="250" min="50" step="50" class="p-2 border border-gray-300 rounded-md w-32 text-center focus:ring-2 focus:ring-[#E07A5F]">
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8 items-start">
+                <div class="w-full md:w-1/2">
+                    <h3 id="formule-title" class="text-2xl font-bold mb-4 text-center">Formule Allégée</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-3">Ingrédient</th>
+                                    <th class="p-3">Quantité</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b">
+                                    <td class="p-3 font-semibold">Farine de blé (T45/T55)</td>
+                                    <td id="q-farine" class="p-3">250 g</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3 font-semibold">Eau tiède</td>
+                                    <td id="q-eau" class="p-3">121 g</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3 font-semibold">Levure fraîche</td>
+                                    <td id="q-levure" class="p-3">16 g</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3 font-semibold">Matière Grasse (Beurre)</td>
+                                    <td id="q-gras" class="p-3">8 g</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3 font-semibold">Sucre</td>
+                                    <td id="q-sucre" class="p-3">8 g</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold">Sel</td>
+                                    <td id="q-sel" class="p-3">3 g</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <h3 class="text-2xl font-bold mb-4 text-center">Proportions</h3>
+                    <div class="chart-container">
+                        <canvas id="ingredientsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="processus" class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 section-title">Le Processus de Fabrication</h2>
+            <div class="space-y-6">
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-2">1. Le Pétrissage</h3>
+                    <p class="text-gray-600 mb-4">Obtenir une pâte lisse et élastique est la première étape cruciale pour emprisonner l'air.</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>Mélangez farine et sel.</li>
+                        <li>Délayez la levure dans l'eau tiède avec le sucre.</li>
+                        <li>Versez le liquide sur le sec et pétrissez 10-15 minutes.</li>
+                        <li>La pâte doit être souple et ne plus coller.</li>
+                    </ul>
+                    <details>
+                        <summary class="flex items-center text-[#E07A5F] font-semibold cursor-pointer">
+                            <span class="arrow mr-2">▶</span>
+                            <span>Le Savoir-Faire du Maître : L'importance du gluten</span>
+                        </summary>
+                        <div class="mt-2 pl-6 border-l-2 border-gray-200 text-gray-700">
+                           Un bon pétrissage développe le réseau de gluten. C'est ce réseau qui va retenir les gaz de la fermentation et permettre à la Triscotte de gonfler pour devenir ultra-légère. C'est la base de sa structure alvéolaire.
+                        </div>
+                    </details>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-2">2. Le Laminage & la Découpe</h3>
+                    <p class="text-gray-600 mb-4">Une feuille de pâte fine et des découpes nettes pour des Triscottes parfaites.</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>Étalez la pâte très finement : <strong>1 à 3 mm d'épaisseur</strong>. L'uniformité est la clé.</li>
+                        <li>Utilisez un emporte-pièce ou un couteau pour une découpe franche.</li>
+                        <li>Placez les pâtons sur une plaque de cuisson en les espaçant.</li>
+                    </ul>
+                    <details>
+                        <summary class="flex items-center text-[#E07A5F] font-semibold cursor-pointer">
+                            <span class="arrow mr-2">▶</span>
+                            <span>Le Savoir-Faire du Maître : La précision du façonnage</span>
+                        </summary>
+                        <div class="mt-2 pl-6 border-l-2 border-gray-200 text-gray-700">
+                           Cette étape est fondamentale car elle définit la forme finale avant la fermentation. Une épaisseur régulière garantit une cuisson et une expansion homogènes. Des bords nets assurent la fameuse surface lisse de la Triscotte.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-2">3. La Fermentation (La Pousse)</h3>
+                    <p class="text-gray-600 mb-4">Chaque pièce lève individuellement dans un milieu chaud et humide.</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>Placez la plaque dans un endroit chaud et humide (ex: four éteint avec un bol d'eau chaude).</li>
+                        <li>Laissez fermenter <strong>30 à 40 minutes</strong>.</li>
+                        <li>Les pâtons doivent visiblement gonfler et doubler de volume.</li>
+                    </ul>
+                    <details>
+                        <summary class="flex items-center text-[#E07A5F] font-semibold cursor-pointer">
+                            <span class="arrow mr-2">▶</span>
+                            <span>Le Savoir-Faire du Maître : Le rôle de l'humidité</span>
+                        </summary>
+                        <div class="mt-2 pl-6 border-l-2 border-gray-200 text-gray-700">
+                          L'humidité ambiante empêche la surface des pâtons de sécher. Si elle séchait, elle formerait une "peau" qui bloquerait l'expansion lors de la cuisson. C'est une étape clé pour obtenir une surface sans croûte.
+                        </div>
+                    </details>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-2">4. La Cuisson-Expansion</h3>
+                    <p class="text-gray-600 mb-4">L'étape magique où les pâtons gonflent de manière spectaculaire sans former de croûte.</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>Préchauffez le four à <strong>150-160°C</strong>.</li>
+                        <li>Placez une lèchefrite en bas du four. Au moment d'enfourner, versez-y un verre d'eau bouillante pour créer de la vapeur.</li>
+                        <li>Enfournez immédiatement pour <strong>5 à 7 minutes</strong>.</li>
+                        <li>Les Triscottes doivent gonfler et devenir très légères.</li>
+                    </ul>
+                     <details>
+                        <summary class="flex items-center text-[#E07A5F] font-semibold cursor-pointer">
+                            <span class="arrow mr-2">▶</span>
+                            <span>Le Savoir-Faire du Maître : Le coup de vapeur</span>
+                        </summary>
+                        <div class="mt-2 pl-6 border-l-2 border-gray-200 text-gray-700">
+                          La vapeur est l'astuce qui mime le procédé industriel. Elle garde la surface de la pâte souple et humide juste assez longtemps pour que la chaleur interne transforme l'eau de la pâte en vapeur, provoquant une expansion explosive et créant la structure alvéolaire.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-2">5. Le Grillage (Optionnel)</h3>
+                    <p class="text-gray-600 mb-4">Pour une coloration dorée et un croustillant parfait jusqu'au cœur.</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>Baissez la température du four à <strong>100-120°C</strong>.</li>
+                        <li>Poursuivez la cuisson pendant <strong>10 à 20 minutes</strong>.</li>
+                        <li>Les Triscottes doivent être parfaitement sèches et légèrement dorées.</li>
+                    </ul>
+                     <details>
+                        <summary class="flex items-center text-[#E07A5F] font-semibold cursor-pointer">
+                            <span class="arrow mr-2">▶</span>
+                            <span>Le Savoir-Faire du Maître : Cuisson en deux temps</span>
+                        </summary>
+                        <div class="mt-2 pl-6 border-l-2 border-gray-200 text-gray-700">
+                          Cette deuxième phase à basse température n'est pas pour cuire, mais pour sécher. Elle élimine l'humidité résiduelle (le but est d'atteindre 2-5% d'humidité) ce qui garantit le croustillant intense et la bonne conservation, sans durcir la surface.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-gray-500 pt-8 border-t">
+            <p>Recette inspirée du brevet EP 0 956 771 A1. Conçu avec passion pour les boulangers amateurs.</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // Define the base formulas for ingredients
+        const formulas = {
+            allegee: {
+                title: "Formule Allégée",
+                farine: 250, // Base flour quantity for calculations
+                eau: 121,
+                levure: 16,
+                gras: 8,
+                sucre: 8,
+                sel: 3,
+                note: "Proche des produits de boulangerie, idéale pour la légèreté."
+            },
+            riche: {
+                title: "Formule Riche (Type Biscuit)",
+                farine: 250, // Base flour quantity for calculations
+                eau: 81,
+                levure: 16,
+                gras: 40,
+                sucre: 60,
+                sel: 3,
+                note: "Plus riche en sucre et gras, pour une texture plus sablée."
+            }
+        };
+
+        let currentFormula = 'allegee'; // Keep track of the currently selected formula
+        let ingredientsChart; // Chart.js instance
+        const baseFlourQuantity = 250; // Reference base for scaling all ingredients
+
+        // Get DOM elements
+        const ctx = document.getElementById('ingredientsChart').getContext('2d');
+        const btnAllegee = document.getElementById('btn-allegee');
+        const btnRiche = document.getElementById('btn-riche');
+        const formuleTitle = document.getElementById('formule-title');
+        const flourQuantityInput = document.getElementById('flour-quantity');
+
+        // Function to update the UI (table and chart) based on selected formula and flour quantity
+        function updateUI(formulaName) {
+            const baseData = formulas[formulaName];
+            const desiredFlour = parseFloat(flourQuantityInput.value);
+
+            // Calculate scaling factor
+            const scaleFactor = desiredFlour / baseFlourQuantity;
+
+            // Calculate scaled quantities
+            const scaledData = {
+                farine: desiredFlour,
+                eau: parseFloat((baseData.eau * scaleFactor).toFixed(1)),
+                levure: parseFloat((baseData.levure * scaleFactor).toFixed(1)),
+                gras: parseFloat((baseData.gras * scaleFactor).toFixed(1)),
+                sucre: parseFloat((baseData.sucre * scaleFactor).toFixed(1)),
+                sel: parseFloat((baseData.sel * scaleFactor).toFixed(1))
+            };
+            
+            // Update table content
+            formuleTitle.textContent = baseData.title;
+            document.getElementById('q-farine').textContent = `${scaledData.farine} g`;
+            document.getElementById('q-eau').textContent = `${scaledData.eau} g`;
+            document.getElementById('q-levure').textContent = `${scaledData.levure} g`;
+            document.getElementById('q-gras').textContent = `${scaledData.gras} g`;
+            document.getElementById('q-sucre').textContent = `${scaledData.sucre} g`;
+            document.getElementById('q-sel').textContent = `${scaledData.sel} g`;
+
+            // Update chart with scaled data
+            updateChart(scaledData);
+
+            // Update button active states
+            if (formulaName === 'allegee') {
+                btnAllegee.classList.remove('btn-inactive');
+                btnAllegee.classList.add('btn-active');
+                btnRiche.classList.remove('btn-active');
+                btnRiche.classList.add('btn-inactive');
+            } else {
+                btnRiche.classList.remove('btn-inactive');
+                btnRiche.classList.add('btn-active');
+                btnAllegee.classList.remove('btn-active');
+                btnAllegee.classList.add('btn-inactive');
+            }
+        }
+
+        // Function to update or initialize the Chart.js doughnut chart
+        function updateChart(data) {
+            const chartData = {
+                labels: ['Farine', 'Eau', 'Levure', 'Matière Grasse', 'Sucre', 'Sel'], // Include Sel in labels
+                datasets: [{
+                    label: 'Proportions des Ingrédients',
+                    data: [data.farine, data.eau, data.levure, data.gras, data.sucre, data.sel], // Include Sel in data
+                    backgroundColor: [
+                        '#F2CC8F', // Farine
+                        '#81B29A', // Eau
+                        '#A4A4A4', // Levure
+                        '#E07A5F', // Matière Grasse
+                        '#F4F1DE', // Sucre
+                        '#6B7280'  // Sel (new color for Sel)
+                    ],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            };
+
+            if (ingredientsChart) {
+                // If chart exists, update its data and refresh
+                ingredientsChart.data = chartData;
+                ingredientsChart.update();
+            } else {
+                // If chart doesn't exist, create a new one
+                ingredientsChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed + ' g';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Event listeners for formula selection buttons
+        btnAllegee.addEventListener('click', () => {
+            currentFormula = 'allegee';
+            updateUI(currentFormula);
+        });
+
+        btnRiche.addEventListener('click', () => {
+            currentFormula = 'riche';
+            updateUI(currentFormula);
+        });
+
+        // Event listener for flour quantity input
+        flourQuantityInput.addEventListener('input', () => {
+            // Ensure the input is a valid number and positive
+            if (flourQuantityInput.value === '' || parseFloat(flourQuantityInput.value) <= 0) {
+                flourQuantityInput.value = baseFlourQuantity; // Reset to base if invalid
+            }
+            updateUI(currentFormula); // Update UI with new flour quantity
+        });
+
+        // Initial UI update when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI(currentFormula);
+        });
+    </script>
+</body>
+</html>
